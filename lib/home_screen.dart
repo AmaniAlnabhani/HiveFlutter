@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -8,6 +9,27 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  Box friendBox = Hive.box('friend');
+  String? name;
+  addFriend() async{
+    await friendBox.put('name', 'amani');
+
+  }
+  getFriend()async{
+    setState(() {
+       name = friendBox.get('name');
+    });
+   
+
+  }
+  updateFriend()async{
+    await friendBox.put('name', 'moon');
+
+  }
+  deleteFriend()async{
+    await friendBox.delete('name');
+
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,10 +41,11 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            ElevatedButton(onPressed: (){}, child:const Text("Create"),),
-            ElevatedButton(onPressed: (){}, child:const Text("Read"),),
-            ElevatedButton(onPressed: (){}, child:const Text("Update"),),
-            ElevatedButton(onPressed: (){}, child:const Text("Delete"),),
+            Text('$name'),
+            ElevatedButton(onPressed: addFriend, child:const Text("Create"),),
+            ElevatedButton(onPressed: getFriend, child:const Text("Read"),),
+            ElevatedButton(onPressed: updateFriend, child:const Text("Update"),),
+            ElevatedButton(onPressed: deleteFriend, child:const Text("Delete"),),
           ],
         ),
       ),
